@@ -1,0 +1,4 @@
+rio-cogeo
+rasterio
+numpy
+
