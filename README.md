@@ -1,51 +1,57 @@
-# Cloud-Optimised Digital Elevation Model (DEM) Pipeline
+# Cloud-Optimized Raster Processing & Delivery Pipeline
 
-**Overview**
+A reproducible, cloud-native pipeline for preparing, validating, and serving large raster datasets efficiently over the web.
 
-This project implements a reproducible, cloud-native pipeline for processing and serving large Digital Elevation Model (DEM) rasters efficiently over HTTP. The workflow converts a raw GeoTIFF DEM into a Cloud-Optimized GeoTIFF (COG), validates its internal structure, and verifies real-time access performance in a web mapping client.
+## Problem Statement
 
-**Problem**
+Large raster datasets are typically stored as monolithic GeoTIFFs, making them inefficient to access, stream, or visualize in web-based GIS applications. This project demonstrates a production-ready pipeline for converting raw rasters into Cloud-Optimized GeoTIFFs (COGs) with validation and web delivery.
 
-Raw DEM GeoTIFFs are often stored as monolithic files, leading to inefficient data access patterns in web-based GIS systems. Without internal tiling, overviews, and HTTP range-request compatibility, even simple map interactions require excessive data transfer.
+## Dataset
 
-**Solution**
+**SRTM Digital Elevation Model** - Kenya/Uganda Region
+- Size: 28,721 × 33,677 pixels (~967 megapixels)
+- Resolution: ~30m at equator
+- Elevation range: -10m to 3,314m
+- Original size: 417 MB (uncompressed)
+- COG size: 524 MB (with compression + 5 overview levels)
 
-A containerised Python pipeline that:
-1. Inspects raster structure and metadata
-2. Converts the DEM into a valid COG with internal tiling and overviews
-3. Validates compliance with the COG specification
-4. Serves the raster via a lightweight HTTP server
-5. Confirms correct behaviour in a browser-based map client
+## Quick Start
 
-**Tech Stack**
+### Using Docker (Recommended)
+```bash
+# Build image
+docker build -t dem-cog .
 
-- Python 3.11
-- GDAL
-- rio-cogeo
-- Docker
-- Leaflet (frontend validation)
+# Run pipeline
+docker run --rm -v %cd%:/app dem-cog python3 scripts/inspect_raster.py data/raw/srtm_raw.tif
+docker run --rm -v %cd%:/app dem-cog python3 scripts/convert_to_cog.py data/raw/srtm_raw.tif data/cog/srtm_cog.tif
+docker run --rm -v %cd%:/app dem-cog python3 scripts/validate_cog.py data/cog/srtm_cog.tif
 
-**Repository structure**
-```
-project-01-dem-cog-pipeline/
-│
-├── data/
-│   ├── raw/
-│   │   └── srtm_raw.tif
-│   └── cog/
-│       └── srtm_cog.tif
-│
-├── scripts/
-│   ├── inspect_raster.py
-│   ├── convert_to_cog.py
-│   └── validate_cog.py
-│
-├── frontend/
-│   └── index.html
-│
-├── Dockerfile
-├── requirements.txt
-└── README.md
+# Serve COG
+docker run -p 8000:8000 -v %cd%:/app dem-cog python3 scripts/serve.py
+
+# View in browser
+http://localhost:8000/frontend/index.html
 ```
 
+## Results
 
+- ✅ Valid COG structure confirmed
+- ✅ 512×512 internal tiling for efficient HTTP range requests
+- ✅ 5 overview levels for multi-resolution access
+- ✅ ~110x faster web access vs raw GeoTIFF
+- ✅ 95% bandwidth reduction for typical viewport loads
+
+See [Performance Comparison](docs/performance_comparison.md) for detailed analysis.
+
+## Technical Stack
+
+- **GDAL 3.9.2** - Raster processing
+- **rio-cogeo** - COG validation
+- **Python 3.11** - Pipeline orchestration
+- **Leaflet + georaster** - Web visualization
+- **Docker** - Reproducible environment
+
+## License
+
+MIT
