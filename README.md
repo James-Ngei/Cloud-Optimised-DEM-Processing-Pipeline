@@ -51,7 +51,3 @@ See [Performance Comparison](docs/performance_comparison.md) for detailed analys
 - **Python 3.11** - Pipeline orchestration
 - **Leaflet + georaster** - Web visualization
 - **Docker** - Reproducible environment
-
-## License
-
-MIT
