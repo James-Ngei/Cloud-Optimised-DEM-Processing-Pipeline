@@ -1,9 +1,4 @@
-# Raster data
-*.tif
-*.tiff
-*.aux.xml
-*.vrt
-*.img
-
-# Data folders
-data/
+# Add these patterns to your .gitignore file
+echo "*.tif" >> .gitignore
+echo "srtm_raw.tif" >> .gitignore
+echo "srtm_cog.tif" >> .gitignore
