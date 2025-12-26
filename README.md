@@ -56,10 +56,28 @@ See [Performance Comparison](docs/performance_comparison.md) for detailed analys
 - **Python 3.11** - Pipeline orchestration
 - **Leaflet + georaster** - Web visualization
 - **Docker** - Reproducible environment
-<<<<<<< HEAD
-=======
 
-## License
+## Repository Structure
 
-MIT
->>>>>>> 21596f7623209e661e233f5b65c7b63656d70612
+```
+project-01-dem-cog-pipeline/
+│
+├── data/
+│   ├── raw/
+│   │   └── srtm_raw.tif
+│   └── cog/
+│       └── srtm_cog.tif
+│
+├── scripts/
+│   ├── inspect_raster.py
+│   ├── convert_to_cog.py
+│   └── validate_cog.py
+│
+├── frontend/
+│   └── index.html
+│
+├── Dockerfile
+├── requirements.txt
+└── README.md
+```
+
