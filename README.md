@@ -8,6 +8,11 @@ Large raster datasets are typically stored as monolithic GeoTIFFs, making them i
 
 ## Dataset
 
+This project uses Shuttle Radar Topography Mission (SRTM) DEM data
+(~30 m resolution) as a sample elevation dataset.
+
+Due to the large size of raster files, DEM data is not stored in this repository.
+
 **SRTM Digital Elevation Model** - Kenya/Uganda Region
 - Size: 28,721 × 33,677 pixels (~967 megapixels)
 - Resolution: ~30m at equator
